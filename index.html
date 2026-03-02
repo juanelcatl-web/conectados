@@ -3,146 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conectados! | Comunidad 60+</title>
-    
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Conectados!%22,%22short_name%22:%22Conectados%22,%22start_url%22:%22/index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22#075e54%22,%22theme_color%22:%22#075e54%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/3135/3135715.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
-    <meta name="theme-color" content="#075e54">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
+    <title>Conectados!</title>
+    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #e5ddd5; }
-        .btn-wa { background: #25d366; color: white; font-weight: 800; border-radius: 2rem; cursor: pointer; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #e5ddd5; }
+        .bg-wa { background: #075e54; }
+        .bg-wa-light { background: #25d366; }
         .step-hidden { display: none; }
-        .badge-verificado { background: #128c7e; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
-        .badge-revision { background: #f59e0b; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+        .input-wa { border-bottom: 2px solid #075e54; outline: none; width: 100%; padding: 8px 0; font-size: 1.2rem; background: transparent; }
     </style>
 </head>
-<body>
+<body class="h-screen flex flex-col">
 
-    <div id="login-screen" class="fixed inset-0 z-[100] bg-[#075e54] flex flex-col items-center p-6 text-white overflow-y-auto">
-        <div class="max-w-md w-full space-y-6 text-center py-6">
-            <h1 class="text-5xl font-black italic tracking-tighter uppercase mb-2">CONECTADOS!</h1>
+    <div id="login-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center p-8">
+        <div class="max-w-sm w-full text-center space-y-8">
+            <h1 class="text-2xl font-bold text-[#075e54] mt-10">Verifica tu número</h1>
+            <p class="text-gray-600 text-sm">Conectados! enviará un aviso a tu círculo. Introduce tu número de teléfono para comenzar.</p>
             
-            <div class="bg-white p-8 rounded-[2.5rem] text-slate-800 shadow-2xl text-left">
-                <div id="intro-box">
-                    <h2 class="text-2xl font-black mb-4 text-emerald-700">¡Hola!</h2>
-                    <p class="text-lg mb-4 text-slate-600">Para mantener la seguridad, no pediremos tu DNI, pero sí queremos validar tu identidad con 3 preguntas de nuestra época.</p>
-                    <button onclick="startSurvey()" class="w-full btn-wa py-5 shadow-lg text-xl uppercase">Empezar</button>
-                    <button onclick="skipSurvey()" class="w-full mt-4 text-slate-400 text-xs font-bold uppercase underline">Omitir y entrar como visitante</button>
+            <div id="auth-phone">
+                <div class="flex gap-4 mb-10">
+                    <div class="w-1/4">
+                        <input type="text" value="+54" class="input-wa text-center text-gray-400" disabled>
+                        <p class="text-[10px] uppercase mt-1 text-gray-400">País</p>
+                    </div>
+                    <div class="w-3/4">
+                        <input type="number" id="userPhone" placeholder="Tu número con área" class="input-wa">
+                        <p class="text-[10px] uppercase mt-1 text-gray-400">Número de teléfono</p>
+                    </div>
                 </div>
-
-                <div id="step-1" class="step-hidden">
-                    <h3 class="text-xl font-bold mb-4">1. ¿Tu nombre y ciudad?</h3>
-                    <input type="text" id="userName" class="w-full p-4 bg-slate-100 rounded-2xl mb-4 outline-none border-2 border-transparent focus:border-emerald-500">
-                    <button onclick="goStep(2)" class="w-full btn-wa py-4">Siguiente</button>
-                </div>
-
-                <div id="step-2" class="step-hidden">
-                    <h3 class="text-xl font-bold mb-4">2. ¿Para qué servía el "Wincofón"?</h3>
-                    <textarea id="q2" class="w-full p-4 bg-slate-100 rounded-2xl mb-4" rows="2"></textarea>
-                    <button onclick="goStep(3)" class="w-full btn-wa py-4">Siguiente</button>
-                </div>
-
-                <div id="step-3" class="step-hidden">
-                    <h3 class="text-xl font-bold mb-4">3. ¿Qué eran las pastillas DRF?</h3>
-                    <input type="text" id="q3" class="w-full p-4 bg-slate-100 rounded-2xl mb-4">
-                    <button onclick="finishAccess()" class="w-full btn-wa py-5 mt-4 uppercase">Entrar ahora</button>
-                </div>
+                <button onclick="showStep('auth-survey')" class="bg-wa-light text-white px-8 py-3 rounded shadow-lg font-bold uppercase tracking-wider">Siguiente</button>
             </div>
+
+            <div id="auth-survey" class="step-hidden text-left space-y-6">
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <p class="text-xs text-emerald-800 font-bold">⚠️ CONTROL DE SEGURIDAD</p>
+                    <p class="text-xs text-emerald-600 leading-tight">Para proteger a la comunidad, responde: ¿Cómo se llamaba el aparato para escuchar discos y qué marca de pastillas venía en tubito?</p>
+                </div>
+                <input type="text" id="userName" placeholder="Tu Nombre Completo" class="input-wa">
+                <textarea id="securityAnswer" placeholder="Tu respuesta aquí..." class="input-wa" rows="2"></textarea>
+                <button onclick="finishAuth()" class="w-full bg-wa-light text-white py-4 rounded shadow-lg font-bold uppercase">Validar e Ingresar</button>
+            </div>
+
+            <p class="text-[10px] text-gray-400">Al continuar, aceptas que eres mayor de 60 años.</p>
             
-            <button id="installBtn" class="hidden w-full bg-emerald-400 text-white py-4 rounded-2xl font-black uppercase">📥 Instalar en mi celular</button>
+            <button id="installBtn" class="hidden border-2 border-[#075e54] text-[#075e54] w-full py-3 rounded-lg font-bold uppercase text-xs">
+                📥 Descargar Conectados! como App
+            </button>
         </div>
     </div>
 
     <div id="app-content" class="hidden h-screen flex flex-col">
-        <header class="bg-[#075e54] p-4 text-white flex justify-between items-center">
+        <header class="bg-wa p-4 text-white flex justify-between items-center shadow-md">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-xl">🤝</div>
+                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-xl">👥</div>
                 <div>
-                    <h2 id="display-name" class="font-bold leading-none">Usuario</h2>
-                    <span id="user-status" class="badge-verificado">Verificado</span>
+                    <h2 class="font-bold leading-none">Círculo General</h2>
+                    <span id="user-phone-display" class="text-[10px] opacity-70"></span>
                 </div>
+            </div>
+            <div class="flex gap-4">
+                <span class="text-xl">🔍</span>
+                <span class="text-xl">⋮</span>
             </div>
         </header>
 
-        <div id="chat-box" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
-                <p class="text-[10px] font-black text-indigo-500 uppercase">Sistema</p>
-                <p class="text-lg">¡Bienvenido! Recuerda ser amable con los demás socios.</p>
+        <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="bg-white p-3 rounded-lg shadow-sm max-w-[85%]">
+                <p class="text-xs font-bold text-emerald-600">Sistema</p>
+                <p class="text-md">¡Bienvenido! Tu número ha sido vinculado correctamente.</p>
             </div>
         </div>
 
-        <footer class="p-3 bg-slate-100 flex gap-2">
-            <input type="text" id="msgInput" placeholder="Escribe un mensaje..." class="flex-1 p-4 rounded-full outline-none">
-            <button onclick="sendMsg()" class="bg-[#128c7e] text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl">➤</button>
+        <footer class="p-2 bg-[#f0f0f0] flex items-center gap-2">
+            <div class="bg-white flex-1 rounded-full px-4 py-2 flex items-center">
+                <span class="mr-2">😊</span>
+                <input type="text" id="msgInput" placeholder="Mensaje" class="w-full outline-none">
+            </div>
+            <button onclick="sendMsg()" class="bg-[#128c7e] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">➤</button>
         </footer>
     </div>
 
     <script>
-        let isVerified = true;
         let deferredPrompt;
 
-        // MANEJO DE INSTALACIÓN
+        // Registro del Service Worker (Fundamental para el botón de instalar)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('installBtn').classList.remove('hidden');
         });
 
-        document.getElementById('installBtn').addEventListener('click', () => {
-            if (deferredPrompt) deferredPrompt.prompt();
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+                document.getElementById('installBtn').classList.add('hidden');
+            }
         });
 
-        function startSurvey() {
-            document.getElementById('intro-box').classList.add('step-hidden');
-            document.getElementById('step-1').classList.remove('step-hidden');
+        function showStep(id) {
+            const phone = document.getElementById('userPhone').value;
+            if (phone.length < 8) {
+                alert("Por favor, ingresa un número válido.");
+                return;
+            }
+            document.getElementById('auth-phone').classList.add('step-hidden');
+            document.getElementById(id).classList.remove('step-hidden');
         }
 
-        function skipSurvey() {
-            isVerified = false;
-            finishAccess();
-        }
+        function finishAuth() {
+            const name = document.getElementById('userName').value;
+            const phone = document.getElementById('userPhone').value;
+            const ans = document.getElementById('securityAnswer').value;
 
-        function goStep(n) {
-            document.getElementById(`step-${n-1}`).classList.add('step-hidden');
-            document.getElementById(`step-${n}`).classList.remove('step-hidden');
-        }
-
-        function finishAccess() {
-            const name = document.getElementById('userName').value || "Invitado";
-            const q2 = document.getElementById('q2').value.toLowerCase();
-            
-            // Si el texto es muy corto, le quitamos el verificado
-            if (isVerified && (q2.length < 5)) isVerified = false;
+            if (!name || !ans) {
+                alert("Completa los datos para validar tu identidad.");
+                return;
+            }
 
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
-            
-            document.getElementById('display-name').innerText = name;
-            const statusLabel = document.getElementById('user-status');
-            
-            if (!isVerified) {
-                statusLabel.innerText = "Bajo Revisión ⚠️";
-                statusLabel.className = "badge-revision";
-            }
+            document.getElementById('user-phone-display').innerText = "+54 " + phone;
         }
 
         function sendMsg() {
             const val = document.getElementById('msgInput').value;
             if(!val) return;
             const chat = document.getElementById('chat-box');
-            const color = isVerified ? "text-emerald-700" : "text-amber-600";
-            const badge = isVerified ? "✅" : "⚠️";
-
-            chat.innerHTML += `
-                <div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
-                    <p class="text-[9px] font-black ${color} uppercase">${badge} Yo</p>
-                    <p class="text-lg">${val}</p>
-                </div>`;
+            chat.innerHTML += `<div class="bg-[#dcf8c6] p-3 rounded-lg shadow-sm max-w-[85%] self-end ml-auto">
+                <p class="text-md">${val}</p>
+            </div>`;
             document.getElementById('msgInput').value = "";
             chat.scrollTop = chat.scrollHeight;
         }
     </script>
 </body>
-</html>
+    </html>
+    
