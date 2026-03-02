@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conectados! | Comunidad Segura 60+</title>
+    <title>Conectados! | Comunidad 60+</title>
     
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Conectados!%22,%22short_name%22:%22Conectados%22,%22start_url%22:%22/index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22#075e54%22,%22theme_color%22:%22#075e54%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/3135/3135715.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
     <meta name="theme-color" content="#075e54">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background: #e5ddd5; }
-        .btn-wa { background: #25d366; color: white; font-weight: 800; border-radius: 2rem; cursor: pointer; transition: 0.2s; }
-        .btn-wa:active { transform: scale(0.95); }
+        .btn-wa { background: #25d366; color: white; font-weight: 800; border-radius: 2rem; cursor: pointer; }
         .step-hidden { display: none; }
-        .input-chat { width: 100%; p: 4; border-radius: 1rem; border: 2px solid #eee; outline: none; font-size: 1.1rem; }
-        .input-chat:focus { border-color: #25d366; }
+        .badge-verificado { background: #128c7e; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+        .badge-revision { background: #f59e0b; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -27,79 +26,64 @@
             
             <div class="bg-white p-8 rounded-[2.5rem] text-slate-800 shadow-2xl text-left">
                 <div id="intro-box">
-                    <h2 class="text-2xl font-black mb-4 text-emerald-700">¡Bienvenido!</h2>
-                    <p class="text-lg mb-4 text-slate-600 leading-tight">Para que este sea un <b>espacio seguro</b> y libre de "jóvenes" o curiosos, no te pediremos tu DNI (por ahora), pero sí queremos saber que compartimos la misma historia.</p>
-                    <p class="text-sm font-bold text-slate-400 uppercase mb-6">Por favor, responde estas 5 preguntas de nuestra época:</p>
-                    <button onclick="startSurvey()" class="w-full btn-wa py-5 shadow-lg text-xl uppercase">Comenzar Cuestionario</button>
+                    <h2 class="text-2xl font-black mb-4 text-emerald-700">¡Hola!</h2>
+                    <p class="text-lg mb-4 text-slate-600">Para mantener la seguridad, no pediremos tu DNI, pero sí queremos validar tu identidad con 3 preguntas de nuestra época.</p>
+                    <button onclick="startSurvey()" class="w-full btn-wa py-5 shadow-lg text-xl uppercase">Empezar</button>
+                    <button onclick="skipSurvey()" class="w-full mt-4 text-slate-400 text-xs font-bold uppercase underline">Omitir y entrar como visitante</button>
                 </div>
 
                 <div id="step-1" class="step-hidden">
-                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 1 de 5</label>
-                    <h3 class="text-xl font-bold mb-4">¿Cómo te llamas y de qué ciudad eres?</h3>
-                    <input type="text" id="userName" placeholder="Ej: Roberto de Tandil" class="input-chat p-4 mb-4">
-                    <button onclick="goStep(2)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                    <h3 class="text-xl font-bold mb-4">1. ¿Tu nombre y ciudad?</h3>
+                    <input type="text" id="userName" class="w-full p-4 bg-slate-100 rounded-2xl mb-4 outline-none border-2 border-transparent focus:border-emerald-500">
+                    <button onclick="goStep(2)" class="w-full btn-wa py-4">Siguiente</button>
                 </div>
 
                 <div id="step-2" class="step-hidden">
-                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 2 de 5</label>
-                    <h3 class="text-xl font-bold mb-4">¿Para qué servía el "Wincofón" y qué le poníamos encima?</h3>
-                    <textarea id="q2" placeholder="Cuéntanos..." class="input-chat p-4 mb-4" rows="2"></textarea>
-                    <button onclick="goStep(3)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                    <h3 class="text-xl font-bold mb-4">2. ¿Para qué servía el "Wincofón"?</h3>
+                    <textarea id="q2" class="w-full p-4 bg-slate-100 rounded-2xl mb-4" rows="2"></textarea>
+                    <button onclick="goStep(3)" class="w-full btn-wa py-4">Siguiente</button>
                 </div>
 
                 <div id="step-3" class="step-hidden">
-                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 3 de 5</label>
-                    <h3 class="text-xl font-bold mb-4">¿Cómo se llamaban esas pastillas redondas que venían en un tubito de cartón?</h3>
-                    <input type="text" id="q3" placeholder="Pista: Tres letras..." class="input-chat p-4 mb-4">
-                    <button onclick="goStep(4)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
-                </div>
-
-                <div id="step-4" class="step-hidden">
-                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 4 de 5</label>
-                    <h3 class="text-xl font-bold mb-4">¿Qué pasaba en la tele cuando aparecía "La Carta de Ajuste"?</h3>
-                    <textarea id="q4" placeholder="¿Había programas o no?" class="input-chat p-4 mb-4" rows="2"></textarea>
-                    <button onclick="goStep(5)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
-                </div>
-
-                <div id="step-5" class="step-hidden">
-                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 5 de 5</label>
-                    <h3 class="text-xl font-bold mb-4">En los bailes de club... ¿Cómo se sacaba a bailar a alguien?</h3>
-                    <textarea id="q5" placeholder="Cuéntanos ese recuerdo..." class="input-chat p-4 mb-4" rows="2"></textarea>
-                    <button onclick="finishAccess()" class="w-full btn-wa py-5 uppercase mt-4">Validar e Ingresar</button>
+                    <h3 class="text-xl font-bold mb-4">3. ¿Qué eran las pastillas DRF?</h3>
+                    <input type="text" id="q3" class="w-full p-4 bg-slate-100 rounded-2xl mb-4">
+                    <button onclick="finishAccess()" class="w-full btn-wa py-5 mt-4 uppercase">Entrar ahora</button>
                 </div>
             </div>
             
-            <p class="text-[10px] opacity-50 uppercase font-black tracking-widest mt-6">Tu seguridad es nuestra prioridad</p>
+            <button id="installBtn" class="hidden w-full bg-emerald-400 text-white py-4 rounded-2xl font-black uppercase">📥 Instalar en mi celular</button>
         </div>
     </div>
 
     <div id="app-content" class="hidden h-screen flex flex-col">
-        <header class="bg-[#075e54] p-4 text-white flex justify-between items-center shadow-lg">
+        <header class="bg-[#075e54] p-4 text-white flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-xl">🤝</div>
-                <h2 class="font-bold">Círculo General</h2>
+                <div>
+                    <h2 id="display-name" class="font-bold leading-none">Usuario</h2>
+                    <span id="user-status" class="badge-verificado">Verificado</span>
+                </div>
             </div>
-            <button id="installBtn" class="hidden text-[10px] bg-white/20 px-3 py-1 rounded-full uppercase font-black">Instalar App</button>
         </header>
 
         <div id="chat-box" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] self-start">
-                <p class="text-[10px] font-black text-indigo-500 uppercase mb-1">Moderador</p>
-                <p class="text-lg italic">"Las respuestas de tu cuestionario han sido validadas. ¡Bienvenido a la comunidad de la experiencia!"</p>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
+                <p class="text-[10px] font-black text-indigo-500 uppercase">Sistema</p>
+                <p class="text-lg">¡Bienvenido! Recuerda ser amable con los demás socios.</p>
             </div>
         </div>
 
         <footer class="p-3 bg-slate-100 flex gap-2">
-            <input type="text" id="msgInput" placeholder="Escribe aquí..." class="flex-1 p-4 rounded-full border-none outline-none">
+            <input type="text" id="msgInput" placeholder="Escribe un mensaje..." class="flex-1 p-4 rounded-full outline-none">
             <button onclick="sendMsg()" class="bg-[#128c7e] text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl">➤</button>
         </footer>
     </div>
 
     <script>
-        let currentUser = "";
+        let isVerified = true;
         let deferredPrompt;
 
-        // PWA Install
+        // MANEJO DE INSTALACIÓN
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -115,42 +99,50 @@
             document.getElementById('step-1').classList.remove('step-hidden');
         }
 
+        function skipSurvey() {
+            isVerified = false;
+            finishAccess();
+        }
+
         function goStep(n) {
-            // Validación simple de que no dejen vacío
-            const prevInput = document.querySelector(`#step-${n-1} input, #step-${n-1} textarea`);
-            if (prevInput && prevInput.value.length < 2) {
-                alert("Por favor, comparte un poquito más con nosotros.");
-                return;
-            }
             document.getElementById(`step-${n-1}`).classList.add('step-hidden');
             document.getElementById(`step-${n}`).classList.remove('step-hidden');
         }
 
         function finishAccess() {
-            currentUser = document.getElementById('userName').value;
+            const name = document.getElementById('userName').value || "Invitado";
+            const q2 = document.getElementById('q2').value.toLowerCase();
+            
+            // Si el texto es muy corto, le quitamos el verificado
+            if (isVerified && (q2.length < 5)) isVerified = false;
+
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
             
-            // Mensaje de bienvenida personalizado
-            setTimeout(() => {
-                const chat = document.getElementById('chat-box');
-                chat.innerHTML += `<div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
-                    <p class="text-lg font-bold">¡Hola a todos! Soy ${currentUser}. Me alegra haber pasado el examen de ingreso.</p>
-                </div>`;
-            }, 500);
+            document.getElementById('display-name').innerText = name;
+            const statusLabel = document.getElementById('user-status');
+            
+            if (!isVerified) {
+                statusLabel.innerText = "Bajo Revisión ⚠️";
+                statusLabel.className = "badge-revision";
+            }
         }
 
         function sendMsg() {
             const val = document.getElementById('msgInput').value;
             if(!val) return;
             const chat = document.getElementById('chat-box');
-            chat.innerHTML += `<div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
-                <p class="text-lg">${val}</p>
-            </div>`;
+            const color = isVerified ? "text-emerald-700" : "text-amber-600";
+            const badge = isVerified ? "✅" : "⚠️";
+
+            chat.innerHTML += `
+                <div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
+                    <p class="text-[9px] font-black ${color} uppercase">${badge} Yo</p>
+                    <p class="text-lg">${val}</p>
+                </div>`;
             document.getElementById('msgInput').value = "";
             chat.scrollTop = chat.scrollHeight;
         }
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5719496512652584" crossorigin="anonymous"></script>
 </body>
 </html>
