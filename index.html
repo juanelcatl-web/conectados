@@ -3,186 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conectados! | Tu Comunidad Segura</title>
+    <title>Conectados! | Comunidad Segura 60+</title>
+    
+    <meta name="theme-color" content="#075e54">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #e5ddd5; overflow: hidden; }
-        .chat-bubble { border-radius: 1.2rem; position: relative; max-width: 85%; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .mine { background: #dcf8c6; align-self: flex-end; border-top-right-radius: 0; }
-        .others { background: white; align-self: flex-start; border-top-left-radius: 0; }
-        .header-wa { background: #075e54; }
-        .btn-wa { background: #25d366; color: white; font-weight: 800; border-radius: 2rem; transition: all 0.2s; }
+        body { font-family: 'Inter', sans-serif; background: #e5ddd5; }
+        .btn-wa { background: #25d366; color: white; font-weight: 800; border-radius: 2rem; cursor: pointer; transition: 0.2s; }
         .btn-wa:active { transform: scale(0.95); }
-        #login-screen { background: linear-gradient(135deg, #075e54 0%, #128c7e 100%); }
-        #chat-box::-webkit-scrollbar { width: 4px; }
-        #chat-box::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .step-hidden { display: none; }
+        .input-chat { width: 100%; p: 4; border-radius: 1rem; border: 2px solid #eee; outline: none; font-size: 1.1rem; }
+        .input-chat:focus { border-color: #25d366; }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body>
 
-    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center p-6 text-white">
-        <div class="max-w-md w-full space-y-8 text-center">
+    <div id="login-screen" class="fixed inset-0 z-[100] bg-[#075e54] flex flex-col items-center p-6 text-white overflow-y-auto">
+        <div class="max-w-md w-full space-y-6 text-center py-6">
             <h1 class="text-5xl font-black italic tracking-tighter uppercase mb-2">CONECTADOS!</h1>
-            <p class="text-sm font-bold opacity-80 uppercase tracking-[0.2em] mb-8 text-emerald-200">Red Social para Mayores</p>
             
-            <div class="bg-white p-8 rounded-[2.5rem] text-slate-800 shadow-2xl">
-                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-2 text-center">Verificación Obligatoria</p>
-                <h2 class="text-xl font-bold mb-6 italic text-center text-slate-600">Debes ser mayor de 60 años para ingresar</h2>
-                
-                <div class="space-y-4 text-left">
-                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Nombre o Apodo</label>
-                    <input type="text" id="userName" placeholder="Ej: Juan de Tandil" class="w-full p-4 bg-slate-100 rounded-2xl text-lg outline-none border-2 border-transparent focus:border-emerald-500">
-                    
-                    <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Tu Edad Actual</label>
-                    <input type="number" id="userAge" placeholder="Debes tener 60 o más" class="w-full p-4 bg-slate-100 rounded-2xl text-lg outline-none border-2 border-transparent focus:border-emerald-500">
-                    
-                    <button onclick="checkAccess()" class="w-full btn-wa py-5 shadow-lg text-xl uppercase mt-4">Entrar a Conectados!</button>
+            <div class="bg-white p-8 rounded-[2.5rem] text-slate-800 shadow-2xl text-left">
+                <div id="intro-box">
+                    <h2 class="text-2xl font-black mb-4 text-emerald-700">¡Bienvenido!</h2>
+                    <p class="text-lg mb-4 text-slate-600 leading-tight">Para que este sea un <b>espacio seguro</b> y libre de "jóvenes" o curiosos, no te pediremos tu DNI (por ahora), pero sí queremos saber que compartimos la misma historia.</p>
+                    <p class="text-sm font-bold text-slate-400 uppercase mb-6">Por favor, responde estas 5 preguntas de nuestra época:</p>
+                    <button onclick="startSurvey()" class="w-full btn-wa py-5 shadow-lg text-xl uppercase">Comenzar Cuestionario</button>
                 </div>
-                <p class="mt-6 text-[9px] text-slate-400 font-bold uppercase leading-tight text-center">Protegemos tu privacidad y seguridad <br> ✅ Comunidad Verificada</p>
+
+                <div id="step-1" class="step-hidden">
+                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 1 de 5</label>
+                    <h3 class="text-xl font-bold mb-4">¿Cómo te llamas y de qué ciudad eres?</h3>
+                    <input type="text" id="userName" placeholder="Ej: Roberto de Tandil" class="input-chat p-4 mb-4">
+                    <button onclick="goStep(2)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                </div>
+
+                <div id="step-2" class="step-hidden">
+                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 2 de 5</label>
+                    <h3 class="text-xl font-bold mb-4">¿Para qué servía el "Wincofón" y qué le poníamos encima?</h3>
+                    <textarea id="q2" placeholder="Cuéntanos..." class="input-chat p-4 mb-4" rows="2"></textarea>
+                    <button onclick="goStep(3)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                </div>
+
+                <div id="step-3" class="step-hidden">
+                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 3 de 5</label>
+                    <h3 class="text-xl font-bold mb-4">¿Cómo se llamaban esas pastillas redondas que venían en un tubito de cartón?</h3>
+                    <input type="text" id="q3" placeholder="Pista: Tres letras..." class="input-chat p-4 mb-4">
+                    <button onclick="goStep(4)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                </div>
+
+                <div id="step-4" class="step-hidden">
+                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 4 de 5</label>
+                    <h3 class="text-xl font-bold mb-4">¿Qué pasaba en la tele cuando aparecía "La Carta de Ajuste"?</h3>
+                    <textarea id="q4" placeholder="¿Había programas o no?" class="input-chat p-4 mb-4" rows="2"></textarea>
+                    <button onclick="goStep(5)" class="w-full btn-wa py-4 uppercase">Siguiente</button>
+                </div>
+
+                <div id="step-5" class="step-hidden">
+                    <label class="text-[10px] font-black uppercase text-emerald-600">Pregunta 5 de 5</label>
+                    <h3 class="text-xl font-bold mb-4">En los bailes de club... ¿Cómo se sacaba a bailar a alguien?</h3>
+                    <textarea id="q5" placeholder="Cuéntanos ese recuerdo..." class="input-chat p-4 mb-4" rows="2"></textarea>
+                    <button onclick="finishAccess()" class="w-full btn-wa py-5 uppercase mt-4">Validar e Ingresar</button>
+                </div>
             </div>
+            
+            <p class="text-[10px] opacity-50 uppercase font-black tracking-widest mt-6">Tu seguridad es nuestra prioridad</p>
         </div>
     </div>
 
     <div id="app-content" class="hidden h-screen flex flex-col">
-        
-        <header class="header-wa p-4 text-white flex items-center justify-between shadow-md">
+        <header class="bg-[#075e54] p-4 text-white flex justify-between items-center shadow-lg">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-xl border border-white/20">🙌</div>
-                <div>
-                    <h2 id="group-title" class="font-bold text-lg leading-tight">Círculo General</h2>
-                    <p class="text-[9px] opacity-70 uppercase font-black tracking-widest">En línea ahora</p>
-                </div>
+                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-xl">🤝</div>
+                <h2 class="font-bold">Círculo General</h2>
             </div>
-            <button onclick="toggleSidebar()" class="bg-white/10 w-10 h-10 rounded-full flex items-center justify-center text-xl">☰</button>
+            <button id="installBtn" class="hidden text-[10px] bg-white/20 px-3 py-1 rounded-full uppercase font-black">Instalar App</button>
         </header>
 
         <div id="chat-box" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-            <div class="chat-bubble others p-3 shadow-sm">
-                <p class="text-[9px] font-black text-indigo-500 uppercase mb-1">Guía del Círculo</p>
-                <p class="text-lg">¡Bienvenido a <b>Conectados!</b>. Este es un espacio seguro para conversar, compartir fotos y conocer gente de tu edad. ¡Disfruta!</p>
-            </div>
-            
-            <div class="chat-bubble others p-3 shadow-sm">
-                <p class="text-[9px] font-black text-emerald-600 uppercase mb-1">Marta R.</p>
-                <p class="text-lg">Hola, soy Marta. ¡Qué alegría este grupo! ¿Alguien sabe si mañana hay feria en la plaza?</p>
-            </div>
-
-            <div class="self-center w-full max-w-[90%] my-4 p-4 bg-white/50 border-2 border-dashed border-slate-300 rounded-2xl text-center">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-2">Recomendado para ti</p>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-5719496512652584"
-                     data-ad-slot="auto"
-                     data-ad-format="fluid"
-                     data-ad-layout-key="-gw-3+1f-3d+2z"
-                     data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] self-start">
+                <p class="text-[10px] font-black text-indigo-500 uppercase mb-1">Moderador</p>
+                <p class="text-lg italic">"Las respuestas de tu cuestionario han sido validadas. ¡Bienvenido a la comunidad de la experiencia!"</p>
             </div>
         </div>
 
-        <div id="sidebar" class="hidden absolute top-16 right-0 left-0 bg-white z-50 p-6 border-b-8 border-emerald-600 shadow-2xl animate-pulse-short">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 italic text-center">Selecciona una Sala Temática:</p>
-            <div class="grid grid-cols-1 gap-3">
-                <button onclick="changeGroup('Tango y Folklore', '💃')" class="p-5 bg-slate-50 rounded-2xl text-left font-black flex items-center gap-4 border-2 border-transparent active:border-emerald-500">
-                    <span class="text-3xl">💃</span> 
-                    <div><p class="text-sm uppercase">Tango y Folklore</p><p class="text-[10px] text-slate-400 font-normal">Para amantes del baile</p></div>
-                </button>
-                <button onclick="changeGroup('Huerta y Jardín', '🌿')" class="p-5 bg-slate-50 rounded-2xl text-left font-black flex items-center gap-4 border-2 border-transparent active:border-emerald-500">
-                    <span class="text-3xl">🌿</span> 
-                    <div><p class="text-sm uppercase">Huerta y Jardín</p><p class="text-[10px] text-slate-400 font-normal">Secretos de la tierra</p></div>
-                </button>
-                <button onclick="changeGroup('Viajes y Paseos', '🚌')" class="p-5 bg-slate-50 rounded-2xl text-left font-black flex items-center gap-4 border-2 border-transparent active:border-emerald-500">
-                    <span class="text-3xl">🚌</span> 
-                    <div><p class="text-sm uppercase">Viajes y Paseos</p><p class="text-[10px] text-slate-400 font-normal">Nuestras aventuras</p></div>
-                </button>
-                <button onclick="changeGroup('Círculo General', '🤝')" class="p-5 bg-emerald-50 text-emerald-700 rounded-2xl text-left font-black flex items-center gap-4 border-2 border-emerald-200">
-                    <span class="text-3xl">🤝</span> 
-                    <div><p class="text-sm uppercase">Círculo General</p><p class="text-[10px] text-emerald-600 font-normal">Charla libre para todos</p></div>
-                </button>
-            </div>
-        </div>
-
-        <footer class="p-4 bg-slate-100 flex gap-3 items-center border-t shadow-inner">
-            <input type="text" id="msgInput" placeholder="Escribe un mensaje..." class="flex-1 p-4 rounded-full border-2 border-slate-200 outline-none text-lg focus:border-emerald-500 transition-colors">
-            <button onclick="sendMsg()" class="bg-[#128c7e] text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg active:scale-90 transition-transform">
-                ➤
-            </button>
+        <footer class="p-3 bg-slate-100 flex gap-2">
+            <input type="text" id="msgInput" placeholder="Escribe aquí..." class="flex-1 p-4 rounded-full border-none outline-none">
+            <button onclick="sendMsg()" class="bg-[#128c7e] text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl">➤</button>
         </footer>
     </div>
 
-<script>
-    let currentUser = "";
+    <script>
+        let currentUser = "";
+        let deferredPrompt;
 
-    function checkAccess() {
-        const name = document.getElementById('userName').value;
-        const age = parseInt(document.getElementById('userAge').value);
+        // PWA Install
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').classList.remove('hidden');
+        });
 
-        if (!name || isNaN(age)) {
-            alert("Por favor, completa tus datos para entrar.");
-            return;
+        document.getElementById('installBtn').addEventListener('click', () => {
+            if (deferredPrompt) deferredPrompt.prompt();
+        });
+
+        function startSurvey() {
+            document.getElementById('intro-box').classList.add('step-hidden');
+            document.getElementById('step-1').classList.remove('step-hidden');
         }
 
-        if (age < 60) {
-            alert("CONECTADOS! es una red exclusiva para mayores de 60 años. \n\n¡Gracias por respetar el espacio!");
-            return;
+        function goStep(n) {
+            // Validación simple de que no dejen vacío
+            const prevInput = document.querySelector(`#step-${n-1} input, #step-${n-1} textarea`);
+            if (prevInput && prevInput.value.length < 2) {
+                alert("Por favor, comparte un poquito más con nosotros.");
+                return;
+            }
+            document.getElementById(`step-${n-1}`).classList.add('step-hidden');
+            document.getElementById(`step-${n}`).classList.remove('step-hidden');
         }
 
-        currentUser = name;
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('app-content').classList.remove('hidden');
-        
-        setTimeout(() => {
-            addMessage("Comunidad", "¡Bienvenido/a al grupo, " + currentUser + "! ¿Desde dónde nos escribes?", "others");
-        }, 800);
-    }
+        function finishAccess() {
+            currentUser = document.getElementById('userName').value;
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            
+            // Mensaje de bienvenida personalizado
+            setTimeout(() => {
+                const chat = document.getElementById('chat-box');
+                chat.innerHTML += `<div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
+                    <p class="text-lg font-bold">¡Hola a todos! Soy ${currentUser}. Me alegra haber pasado el examen de ingreso.</p>
+                </div>`;
+            }, 500);
+        }
 
-    function sendMsg() {
-        const input = document.getElementById('msgInput');
-        const text = input.value;
-        if (!text) return;
-
-        addMessage("Yo", text, "mine");
-        input.value = "";
-        
-        // Simulación de respuesta
-        setTimeout(() => {
-            const respuestas = ["¡Qué buena onda!", "¡Un gusto saludarte!", "¡Coincido con vos!", "Me alegro mucho.", "¡Gracias por compartir!"];
-            const random = respuestas[Math.floor(Math.random() * respuestas.length)];
-            addMessage("Amigo Online", random, "others");
-        }, 1500);
-    }
-
-    function addMessage(sender, text, type) {
-        const chatBox = document.getElementById('chat-box');
-        const div = document.createElement('div');
-        div.className = `chat-bubble ${type} p-3 shadow-sm`;
-        const senderColor = type === 'mine' ? 'text-emerald-700' : 'text-indigo-500';
-        
-        div.innerHTML = `<p class="text-[9px] font-black ${senderColor} uppercase mb-1">${sender}</p><p class="text-lg leading-tight">${text}</p>`;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function toggleSidebar() {
-        const sb = document.getElementById('sidebar');
-        sb.classList.toggle('hidden');
-    }
-
-    function changeGroup(title, emoji) {
-        document.getElementById('group-title').innerText = title;
-        document.getElementById('chat-box').innerHTML = `
-            <div class="chat-bubble others p-3 shadow-sm mx-auto text-center border-2 border-emerald-100 bg-emerald-50">
-                <p class="text-[10px] font-black text-emerald-600 uppercase">Aviso de Sala</p>
-                <p class="text-sm font-bold text-slate-500 italic">Entraste al grupo de ${title} ${emoji}</p>
-            </div>
-        `;
-        toggleSidebar();
-    }
-
-    document.getElementById('msgInput').addEventListener("keypress", (e) => { if (e.key === "Enter") sendMsg(); });
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5719496512652584" crossorigin="anonymous"></script>
+        function sendMsg() {
+            const val = document.getElementById('msgInput').value;
+            if(!val) return;
+            const chat = document.getElementById('chat-box');
+            chat.innerHTML += `<div class="bg-[#dcf8c6] p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] self-end">
+                <p class="text-lg">${val}</p>
+            </div>`;
+            document.getElementById('msgInput').value = "";
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5719496512652584" crossorigin="anonymous"></script>
 </body>
 </html>
