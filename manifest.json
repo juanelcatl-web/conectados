@@ -1,5 +1,5 @@
 {
-name": "Conectados",
+  "name": "Conectados",
   "short_name": "Conectados",
   "description": "Comunidad con salas de chat para compartir en grupo.",
   "start_url": "./",
